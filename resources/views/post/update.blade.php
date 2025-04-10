@@ -16,7 +16,7 @@
             <h4 class="mb-0">Edit Post</h4>
           </div>
           <div class="card-body">
-            <form action="/post/{{ $post['id'] }}" method="POST">
+            <form action="{{ route('post.update',$post['id']) }}" method="POST">
               @csrf
               @method('PUT')
               <div class="mb-3">
@@ -28,7 +28,7 @@
                <input type="text" class="form-control form-control-lg" value="{{ $post['body'] }}" id="body" name="body">
               </div>
               <div class="text-end">
-                <a href="/post" class="btn btn-outline-secondary me-2">Cancel</a>
+                <a href="{{ route('post.index') }}" class="btn btn-outline-secondary me-2">Cancel</a>
                 <input type="submit" class="btn btn-primary px-4" value="Update Post">
               </div>
             </form>

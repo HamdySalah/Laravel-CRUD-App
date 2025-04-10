@@ -16,7 +16,8 @@
             <h4 class="mb-0">Create Post</h4>
           </div>
           <div class="card-body">
-            <form action="/post" method="POST">
+            <form action="{{ route('post.store') }}" method="POST">
+              @csrf
               <div class="mb-3">
                 <label for="title" class="form-label fw-bold">Title</label>
                 <input type="text" class="form-control form-control-lg" id="title" name="title">
@@ -26,7 +27,7 @@
                 <input type="text" class="form-control form-control-lg" id="body" name="body">
             </div>
               <div class="text-end">
-                <a href="/post" class="btn btn-outline-secondary me-2">Cancel</a>
+                <a href="{{route('post.index')}}" class="btn btn-outline-secondary me-2">Cancel</a>
                 <input type="submit" class="btn btn-primary px-4" value="Create Post">
               </div>
             </form>

@@ -15,7 +15,7 @@
                 <h1>Posts</h1>
             </div>
             <div class="col-md-4 text-end">
-                <a href="/post/create" class="btn btn-primary">Create Post</a>
+                <a href="{{route('post.create')}}" class="btn btn-primary">Create Post</a>
             </div>
         </div>
         <hr>
@@ -35,9 +35,15 @@
             <td>{{ $post['title'] }}</td>
             <td>{{ $post['body'] }}</td>
             <td>{{ $post['created_by'] }}</td>
-            <td><a href="/post/{{ $post['id'] }}">View</a></td>
-            <td><a href="/post/{{ $post['id'] }}/edit">Edit</a></td>
-            <td><a href="">Delete</a></td>
+            <td><a href="{{ route('post.show', $post['id']) }}">View</a></td>
+            <td><a href="{{route('post.edit', $post['id'])}}">Edit</a></td>
+            <td>
+                <form action="{{ route('post.delete', $post['id']) }}" method="POST">
+                    @method('delete')
+                    @csrf
+                    <input type="submit" value="Delete" >
+                </form>
+            </td>
         </tr>
     @endforeach
     </table>
