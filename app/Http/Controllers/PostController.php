@@ -2,92 +2,94 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StorePostRequest;
+use App\Models\Post;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class PostController extends Controller
 {
     function index(){
-        $post=[
-            [
-            'id' => 1,
-            'title' => 'My First Post',
-            'body' => 'This is the body of my first post',
-            'created_by' => 'Hamdy'],
-            [
-            'id' => 2,
-            'title' => 'My Second Post',
-            'body' => 'This is the body of my second post', 
-            'created_by' => 'Mohamed'],
-            ['id' => 3,
-            'title' => 'My Third Post',
-            'body' => 'This is the body of my third post',
-            'created_by' => 'Omar'],
-            [
-            'id' => 4,
-            'title' => 'My Fourth Post',
-            'body' => 'This is the body of my fourth post',
-            'created_by' => 'Felo'],
-        ];
+        $post= Post::all();
         return view('post.index',['post' => $post]);
     }
-    function veiw(){
-        $post=[
-        [
-        'id' => 1,
-        'title' => 'My First Post',
-        'body' => 'This is the body of my first post',
-        'created_by' => 'Hamdy'],
-        [
-        'id' => 2,
-        'title' => 'My Second Post',
-        'body' => 'This is the body of my second post', 
-        'created_by' => 'Mohamed'],
-        ['id' => 3,
-        'title' => 'My Third Post',
-        'body' => 'This is the body of my third post',
-        'created_by' => 'Omar'],
-        [
-        'id' => 4,
-        'title' => 'My Fourth Post',
-        'body' => 'This is the body of my fourth post',
-        'created_by' => 'Felo'],
-    ];
-    return view('post.posts',['post' => $post]);
-    }
+    // function veiw(){
+    //     $post=[
+    //     [
+    //     'id' => 1,
+    //     'title' => 'My First Post',
+    //     'body' => 'This is the body of my first post',
+    //     'created_by' => 'Hamdy'],
+    //     [
+    //     'id' => 2,
+    //     'title' => 'My Second Post',
+    //     'body' => 'This is the body of my second post', 
+    //     'created_by' => 'Mohamed'],
+    //     ['id' => 3,
+    //     'title' => 'My Third Post',
+    //     'body' => 'This is the body of my third post',
+    //     'created_by' => 'Omar'],
+    //     [
+    //     'id' => 4,
+    //     'title' => 'My Fourth Post',
+    //     'body' => 'This is the body of my fourth post',
+    //     'created_by' => 'Felo'],
+    // ];
+    // return view('post.posts',['post' => $post]);
+    // }
     function show($id){
-        $post=[
-            'id' => $id ,
-            'title' => 'My First Post',
-            'body' => 'This is the body of my first post',
-            'created_by' => 'Hamdy'
-        ];
+        $post= Post::find($id);
+        if(!$post){
+            return redirect()->route('post.index')->with('error', 'Post not found');
+        }
         return view('post.view_post',['post' => $post]);
     }
     function create(){
         return view('post.create');
     }
-    function store(Request $req){
-        $data = $req;
-        dd($data);
-        $title = $data['title'];
-        $body = $data['body'];
-        return "Data Stoed Successfuly title => ".$title ." and Body =>".$body;
+    public function store(Request $request)
+    {
+        $validated = $request->validate([
+            'title' => 'required|string|max:255',
+            'content' => 'required|string',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+        ]);
+
+        if ($request->hasFile('image')) {
+            $validated['image'] = $request->file('image')->store('images', 'public');
+        }
+
+        Post::create($validated);
+
+        return redirect()->route('post.index')->with('success', 'Post created successfully.');
     }
     function edit($id){
-        $post=[
-            'id' => $id ,
-            'title' => 'My First Post',
-            'body' => 'This is the body of my first post',
-            'created_by' => 'Hamdy'
-        ];
+        $post=Post::find($id);
         return view('post.update',['post' => $post]);
     }
-    function update($id, Request $req){
-        $data = $req -> all;
-        dd($data);
-        return "Update Successfuly";
+    public function update(Request $request, $id)
+    {
+        $validated = $request->validate([
+            'title' => 'required|string|max:255',
+            'content' => 'required|string',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+        ]);
+
+        $post = Post::findOrFail($id);
+
+        if ($request->hasFile('image')) {
+            if ($post->image) {
+                Storage::disk('public')->delete($post->image);
+            }
+            $validated['image'] = $request->file('image')->store('images', 'public');
+        }
+
+        $post->update($validated);
+
+        return redirect()->route('post.index')->with('success', 'Post updated successfully.');
     }
-    function delete($id){
-        return "Delete Post with ID: $id Successfully"; 
+    function destroy($id){
+        Post::destroy($id);
+        return to_route('post.index')->with("Delete Post with ID: {{$id}} Successfully"); 
     }
 }

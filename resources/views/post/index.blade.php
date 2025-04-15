@@ -24,21 +24,29 @@
         <th scope="col">ID</th>
         <th scope="col">Title</th>
         <th scope="col">Body</th>
-        <th scope="col">Created By</th>
+        <th scope="col">Image</th>
+        <th scope="col">Created At</th>
         <th scope="col">View</th>
         <th scope="col">Edit</th>
         <th scope="col">Delete</th>
     </tr>
     @foreach ($post as $post)
         <tr>
-            <td >{{ $post['id'] }}</td>
-            <td>{{ $post['title'] }}</td>
-            <td>{{ $post['body'] }}</td>
-            <td>{{ $post['created_by'] }}</td>
+            <td>{{ $post->id }}</td>
+            <td>{{ $post->title }}</td>
+            <td>{{ $post->content }}</td>
+            <td>
+                @if($post->image)
+                    <img src="{{ asset('storage/' . $post->image) }}" alt="{{ $post->title }}" style="max-width: 100px;">
+                @else
+                    No Image
+                @endif
+            </td>
+            <td>{{ $post->created_at }}</td>
             <td><a href="{{ route('post.show', $post['id']) }}">View</a></td>
             <td><a href="{{route('post.edit', $post['id'])}}">Edit</a></td>
             <td>
-                <form action="{{ route('post.delete', $post['id']) }}" method="POST">
+                <form action="{{ route('post.destroy', $post['id']) }}" method="POST">
                     @method('delete')
                     @csrf
                     <input type="submit" value="Delete" >
@@ -47,6 +55,8 @@
         </tr>
     @endforeach
     </table>
-
+    <br>
+    <br>
+    <br>
 </body>
 </html>
