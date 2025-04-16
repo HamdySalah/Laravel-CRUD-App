@@ -9,6 +9,13 @@
     <title>Posts</title>
 </head>
 <body>
+    <nav class="navbar navbar-dark bg-dark shadow-sm">
+        <div class="container-fluid d-flex justify-content-start align-items-center gap-4">
+            <a class="navbar-brand fs-3" href="{{ route('post.index') }}">ITI Blog</a>
+            <a class="nav-link text-light fs-5" href="{{ route('post.index') }}">All Posts</a>
+            <a class="nav-link text-light fs-5" href="{{ route('post.trashed') }}">Trashed Posts</a>
+        </div>
+    </nav>
     <div class="container mt-4">
         <div class="row justify-content-between">
             <div class="col-md-8">
@@ -43,13 +50,13 @@
                 @endif
             </td>
             <td>{{ $post->created_at }}</td>
-            <td><a href="{{ route('post.show', $post['id']) }}">View</a></td>
-            <td><a href="{{route('post.edit', $post['id'])}}">Edit</a></td>
+            <td><a href="{{ route('post.show', $post['id']) }}" class="btn btn-primary">View</a></td>
+            <td><a href="{{route('post.edit', $post['id'])}}" class="btn btn-warning">Edit</a></td>
             <td>
                 <form action="{{ route('post.destroy', $post['id']) }}" method="POST">
                     @method('delete')
                     @csrf
-                    <input type="submit" value="Delete" >
+                    <button type="submit" class="btn btn-danger">Delete</button>
                 </form>
             </td>
         </tr>
@@ -58,5 +65,8 @@
     <br>
     <br>
     <br>
+    <footer class="text-center mt-5">
+        <p>&copy; {{ date('Y') }} Laravel CRUD App. All rights reserved @ ITI.</p>
+    </footer>
 </body>
 </html>

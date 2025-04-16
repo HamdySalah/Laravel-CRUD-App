@@ -10,8 +10,9 @@ use Illuminate\Support\Facades\Storage;
 class PostController extends Controller
 {
     function index(){
-        $post= Post::all();
-        return view('post.index',['post' => $post]);
+        // $post= Post::all();
+        $posts = Post::whereNull('deleted_at')->get(); // or $posts = Post::all(); it same
+        return view('post.index', ['post' => $posts]);
     }
     // function veiw(){
     //     $post=[
@@ -47,22 +48,21 @@ class PostController extends Controller
     function create(){
         return view('post.create');
     }
-    public function store(Request $request)
+    public function store(StorePostRequest $req)
     {
-        $validated = $request->validate([
-            'title' => 'required|string|max:255',
-            'content' => 'required|string',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-        ]);
-
-        if ($request->hasFile('image')) {
-            $validated['image'] = $request->file('image')->store('images', 'public');
+        $validated = $req->validated();
+        $data['user_id'] = $validated['user_id']; 
+        if ($req->hasFile('image')) {
+            $image = $req->file('image');
+            $imageName = time() . '_' . $image->getClientOriginalName();
+            $imagePath = $image->storeAs('posts', $imageName, 'public');
+            $validated['image'] = $imagePath;
         }
-
         Post::create($validated);
-
+    
         return redirect()->route('post.index')->with('success', 'Post created successfully.');
     }
+    
     function edit($id){
         $post=Post::find($id);
         return view('post.update',['post' => $post]);
@@ -81,7 +81,10 @@ class PostController extends Controller
             if ($post->image) {
                 Storage::disk('public')->delete($post->image);
             }
-            $validated['image'] = $request->file('image')->store('images', 'public');
+            $image = $request->file('image');
+            $imageName = time() . '_' . $image->getClientOriginalName();
+            $imagePath = $image->storeAs('posts', $imageName, 'public');
+            $validated['image'] = $imagePath;
         }
 
         $post->update($validated);
@@ -89,7 +92,21 @@ class PostController extends Controller
         return redirect()->route('post.index')->with('success', 'Post updated successfully.');
     }
     function destroy($id){
-        Post::destroy($id);
-        return to_route('post.index')->with("Delete Post with ID: {{$id}} Successfully"); 
+        // Post::destroy($id);
+        // return to_route('post.index')->with("Delete Post with ID: {{$id}} Successfully"); 
+        $post = Post::findOrFail($id);
+        $post->delete();//soft
+        return redirect()->route('post.index')->with('success', "Deleted post ID: {$id} successfully.");
+    }
+    public function trashed()
+    {
+        $posts = Post::onlyTrashed()->get();
+        return view('post.trashed', compact('posts'));
+    }
+    public function restore($id)
+    {
+        $post = Post::onlyTrashed()->findOrFail($id);
+        $post->restore();
+        return redirect()->route('post.trashed')->with('success', 'Post restored successfully.');
     }
 }

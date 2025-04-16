@@ -36,3 +36,6 @@
         </div>
     </div>
 </div>
+<footer class="text-center mt-5">
+    <p>&copy; {{ date('Y') }} Laravel CRUD App. All rights reserved @ ITI.</p>
+</footer>

@@ -8,6 +8,13 @@
     <title>Add Post</title>
 </head>
 <body>
+  <nav class="navbar navbar-dark bg-dark shadow-sm">
+    <div class="container-fluid d-flex justify-content-start align-items-center gap-4">
+        <a class="navbar-brand fs-3" href="{{ route('post.index') }}">ITI Blog</a>
+        <a class="nav-link text-light fs-5" href="{{ route('post.index') }}">All Posts</a>
+        <a class="nav-link text-light fs-5" href="{{ route('post.trashed') }}">Trashed Posts</a>
+    </div>
+</nav>
   <div class="container mt-5">
     <div class="row justify-content-center">
       <div class="col-md-8">
@@ -30,9 +37,13 @@
                 <label for="image" class="form-label fw-bold">Image</label>
                 <input type="file" class="form-control" id="image" name="image">
               </div>
+              <div class="mb-3">
+                <label for="user_id" class="form-label fw-bold">User ID</label>
+                <input type="number" class="form-control form-control-lg" id="user_id" name="user_id" placeholder="Enter user ID">
+              </div>
               <div class="text-end">
-                <a href="{{route('post.index')}}" class="btn btn-outline-secondary me-2">Cancel</a>
-                <input type="submit" class="btn btn-primary px-4" value="Create Post">
+                <a href="{{route('post.index')}}" class="btn btn-secondary me-2">Cancel</a>
+                <input type="submit" class="btn btn-success px-4" value="Create Post">
               </div>
             </form>
           </div>
@@ -53,3 +64,6 @@
         </ul>
     </div>
 @endif
+<footer class="text-center mt-5">
+  <p>&copy; {{ date('Y') }} Laravel CRUD App. All rights reserved @ ITI.</p>
+</footer>

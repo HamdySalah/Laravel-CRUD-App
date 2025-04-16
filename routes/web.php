@@ -15,3 +15,7 @@ Route::get('/', function () {
 // Route::delete('/post/{id}', [PostController::class,"delete"])->where('id', '[0-9]+')->name('post.delete');
 
 Route::resource('post', PostController::class);
+
+//restore soft delete
+Route::get('/posts/trashed', [PostController::class, 'trashed'])->name('post.trashed');
+Route::get('/posts/restore/{id}', [PostController::class, 'restore'])->name('post.restore');
