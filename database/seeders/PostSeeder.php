@@ -27,7 +27,7 @@ class PostSeeder extends Seeder
             Post::create([
                 'title' => $faker->sentence,
                 'content' => $faker->paragraph,
-                'user_id' => $faker->randomElement($userIds),
+                'user_id' => 4,//$faker->randomElement($userIds),
                 'image' => null,
                 'created_at' => now(),
                 'updated_at' => now(),

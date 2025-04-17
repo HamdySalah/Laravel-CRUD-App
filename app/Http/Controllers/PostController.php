@@ -50,16 +50,18 @@ class PostController extends Controller
     }
     public function store(StorePostRequest $req)
     {
-        $validated = $req->validated();
-        $data['user_id'] = $validated['user_id']; 
         if ($req->hasFile('image')) {
             $image = $req->file('image');
             $imageName = time() . '_' . $image->getClientOriginalName();
             $imagePath = $image->storeAs('posts', $imageName, 'public');
             $validated['image'] = $imagePath;
         }
-        Post::create($validated);
-    
+        Post::create([
+            'title' => $req->title,
+            'content' => $req->content,
+            'image' => $imagePath ?? null,
+            'user_id' => $req->user_id,
+        ]);
         return redirect()->route('post.index')->with('success', 'Post created successfully.');
     }
     
