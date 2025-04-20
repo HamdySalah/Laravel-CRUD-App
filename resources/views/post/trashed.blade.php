@@ -1,5 +1,6 @@
-<x-layout>
+<x-app-layout>
     <x-slot name="title">Trashed Posts</x-slot>
+    <x-slot name="header">Trashed Posts</x-slot>
     <div class="container mt-4">
         <h2 class="text-center mb-4">Trashed Posts</h2>
         <div class="table-responsive">
@@ -29,4 +30,4 @@
             </table>
         </div>
     </div>
-</x-layout>
+</x-app-layout>

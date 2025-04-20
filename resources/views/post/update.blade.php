@@ -1,5 +1,6 @@
-<x-layout>
+<x-app-layout>
   <x-slot name="title">Edit Post</x-slot>
+  <x-slot name="header">Edit Post</x-slot>
   <div class="container mt-5">
     <div class="row justify-content-center">
       <div class="col-md-8">
@@ -46,4 +47,4 @@
         </ul>
     </div>
 @endif
-</x-layout>
+</x-app-layout>

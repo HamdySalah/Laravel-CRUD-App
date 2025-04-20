@@ -1,4 +1,4 @@
-<x-layout>
+<x-app-layout>
   <x-slot name="title">Create Post</x-slot>
   <x-slot name="header">Create Post</x-slot>
   <div class="container mt-5">
@@ -50,4 +50,4 @@
         </ul>
     </div>
     @endif
-  </x-layout>
+</x-app-layout>

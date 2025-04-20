@@ -1,4 +1,4 @@
-<x-layout>
+<x-app-layout>
     <x-slot name="title">Posts</x-slot>
     <x-slot name="header">Posts</x-slot>
     <div class="container mt-4">
@@ -47,4 +47,4 @@
         </tr>
     @endforeach
     </table>
-</x-layout>
+</x-app-layout>

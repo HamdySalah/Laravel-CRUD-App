@@ -9,19 +9,40 @@
     <title>{{ $title ?? 'Laravel CRUD App' }}</title>
 </head>
 <body>
-  <nav class="navbar navbar-dark bg-dark shadow-sm">
-    <div class="container-fluid d-flex justify-content-start align-items-center gap-4">
-        <a class="navbar-brand fs-3" href="{{ route('post.index') }}">ITI Blog</a>
-        <a class="nav-link text-light fs-5" href="{{ route('post.index') }}">All Posts</a>
-        <a class="nav-link text-light fs-5" href="{{ route('post.trashed') }}">Trashed Posts</a>
-    </div>
-</nav>
-<main class="container mt-4">
-    {{ $slot }}
-</main>
-<footer class="text-center mt-5">
-    <p>&copy; {{ date('Y') }} Laravel CRUD App. All rights reserved @ ITI.</p>
-</footer>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js" integrity="sha384-ZWJhYVnydn+NXH4AecAMhnrZk0hhG8cy3mvxq3GhvEIK3ejKZhzUdhI9AcNfV7s6" crossorigin="anonymous"></script>
-</body>
-</html>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm">
+        <div class="container-fluid">
+            <a class="navbar-brand fs-3" href="{{ route('post.index') }}">ITI Blog</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link text-light fs-5" href="{{ route('post.index') }}">All Posts</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-light fs-5" href="{{ route('post.trashed') }}">Trashed Posts</a>
+                    </li>
+                </ul>
+                <div class="dropdown">
+                    <button class="btn btn-outline-light dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                        {{ Auth::user()->name }}
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
+                        <li><a class="dropdown-item" href="{{ route('profile.edit') }}">Profile</a></li>
+                        <li>
+                            <form method="POST" action="{{ route('logout') }}">
+                                @csrf
+                                <button class="dropdown-item" type="submit">Log Out</button>
+                            </form>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container mt-4">
+        {{ $slot }}
+    </main>
+

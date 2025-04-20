@@ -1,5 +1,7 @@
-<x-layout>
+<x-app-layout>
+  <br>
     <x-slot name="title">Post Details</x-slot>
+    <x-slot name="header">Post Details</x-slot>
     <div class="row justify-content-center">
       <div class="col-lg-8">
         <!-- Post Details -->
@@ -49,5 +51,5 @@
         </div>
       </div>
     </div>
-  </x-layout>
+  </x-app-layout>
   
